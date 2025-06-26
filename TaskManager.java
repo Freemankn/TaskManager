@@ -58,7 +58,10 @@ public class TaskManager {
     }
 
     public void deleteTask(int taskId) {
-        /* ... */ }
+        Task task = taskIDHashMap.get(taskId);
+        task.getAssignedUser().unassignTask(task);
+        taskIDHashMap.remove(taskId);
+    }
 
     public void markTaskComplete(int taskId) {
         /* ... */ }

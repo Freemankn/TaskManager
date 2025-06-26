@@ -66,6 +66,10 @@ public class User {
         tasks.add(task);
     }
 
+    public void unassignTask(Task task) {
+        tasks.remove(task);
+    }
+
     // public void removeTask()
 
 }

@@ -73,6 +73,13 @@ public class Main {
 
                 tm.addTask(task);
 
+            } else if (option.equals("rmT")) {
+                System.out.println("Enter Task ID:");
+
+                // Fields
+                int taskID = scanner.nextInt();
+                scanner.nextLine();
+                tm.deleteTask(taskID);
             } else if (option.equals("editT")) {
                 System.out.println("Enter Task ID:");
 
