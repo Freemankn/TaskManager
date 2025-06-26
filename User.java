@@ -14,6 +14,10 @@ public class User {
         this.tasks = tasks;
     }
 
+    public User(String name) {
+        this(name, "None", null);
+    }
+
     // getters
     public int getuID() {
         return uID;
@@ -39,5 +43,7 @@ public class User {
     public void assignTask(Task task) {
         this.tasks.add(task);
     }
+
+    // public void removeTask()
 
 }

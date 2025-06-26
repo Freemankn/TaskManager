@@ -16,8 +16,8 @@ public class Task {
         this.assignedUser = assignedUser;
     }
 
-    public Task(String title, String description) {
-        this(title, description, null, TaskStatus.TODO, null);
+    public Task(String title) {
+        this(title, "None", "None", TaskStatus.TODO, null);
     }
 
     // Anytime, you create an id, the id counter increments by one. Should be static
@@ -28,7 +28,7 @@ public class Task {
 
     // getters
 
-    public int getId() {
+    public int getID() {
         return id;
     }
 
