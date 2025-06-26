@@ -20,6 +20,7 @@ public class Main {
 
         System.out.println("Would you like to assign a task to a User: command-> asgnT");
         lineBreak();
+        System.out.println("Type q to quit:");
     }
 
     public static void main(String[] args) {
@@ -42,62 +43,77 @@ public class Main {
         // scanner.nextLine();
         String option = scanner.nextLine(); // read entire line
 
-        if (option.equals("addT")) {
-            System.out.println("Enter a title:");
+        while (!option.equals("q")) {
+            if (option.equals("addT")) {
+                System.out.println("Enter a title:");
 
-            // Title
-            option = scanner.nextLine();
-            task = new Task(option);
-
-            // Description
-            lineBreak();
-            System.out.println("Would you like to add a description? (y/n)");
-            option = scanner.nextLine();
-            if (option.equals("y")) {
-                System.out.println("Enter description:");
+                // Title
                 option = scanner.nextLine();
-                task.setDescription(option);
-            }
-            lineBreak();
+                task = new Task(option);
 
-            // Due date
-            System.out.println("Would you like to set a due date? (y/n)");
-            option = scanner.nextLine();
-            if (option.equals("y")) {
-                System.out.println("Enter due date:");
+                // Description
+                lineBreak();
+                System.out.println("Would you like to add a description? (y/n)");
                 option = scanner.nextLine();
-                task.setDueDate(option);
-            }
-            lineBreak();
-            System.out.println("The task ID is: " + task.getID());
-            lineBreak();
+                if (option.equals("y")) {
+                    System.out.println("Enter description:");
+                    option = scanner.nextLine();
+                    task.setDescription(option);
+                }
+                lineBreak();
 
-            tm.addTask(task);
-
-        } else if (option.equals("addU")) {
-            System.out.println("Enter the username:");
-
-            // Username
-            option = scanner.nextLine();
-            user = new User(option);
-
-            // Role
-            lineBreak();
-            System.out.println("Would you like to add a role? (y/n)");
-            option = scanner.nextLine();
-            if (option.equals("y")) {
-                System.out.println("Enter role:");
+                // Due date
+                System.out.println("Would you like to set a due date? (y/n)");
                 option = scanner.nextLine();
-                user.setRole(option);
-            }
-            lineBreak();
-            System.out.println("The user ID is: " + user.getuID());
-            lineBreak();
+                if (option.equals("y")) {
+                    System.out.println("Enter due date:");
+                    option = scanner.nextLine();
+                    task.setDueDate(option);
+                }
+                lineBreak();
+                System.out.println("The task ID is: " + task.getID());
+                lineBreak();
 
-            tm.addUser(user);
+                tm.addTask(task);
+
+            } else if (option.equals("addU")) {
+                System.out.println("Enter the username:");
+
+                // Username
+                option = scanner.nextLine();
+                user = new User(option);
+
+                // Role
+                lineBreak();
+                System.out.println("Would you like to add a role? (y/n)");
+                option = scanner.nextLine();
+                if (option.equals("y")) {
+                    System.out.println("Enter role:");
+                    option = scanner.nextLine();
+                    user.setRole(option);
+                }
+                lineBreak();
+                System.out.println("The user ID is: " + user.getuID());
+                lineBreak();
+
+                tm.addUser(user);
+            } else if (option.equals("asgnT")) {
+                // Task ID
+                System.out.println("Enter Task ID:");
+                // scanner.nextLine();
+                int taskID = scanner.nextInt();
+                // User ID
+                System.out.println("Enter User ID:");
+                int uID = scanner.nextInt();
+                lineBreak();
+
+                tm.assignTask(taskID, uID);
+
+            }
+            prompt();
+            option = scanner.nextLine(); // read entire line
         }
-        System.out.println(user.getName() + " " + user.getRole());
-
+        System.out.println(tm.getUser(1));
         // Assigning Users
 
     }

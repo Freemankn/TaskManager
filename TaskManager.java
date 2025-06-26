@@ -12,8 +12,25 @@ import java.util.List;
 public class TaskManager {
     // private List<Task> tasks = new ArrayList<>();
     // private List<User> users = new ArrayList<>();
-    private HashMap<Integer, Task> taskIDHashMap = new HashMap<>();
-    private HashMap<Integer, User> userIDHashMap = new HashMap<>();
+    private HashMap<Integer, Task> taskIDHashMap = new HashMap<>(); // <id, Task>
+    private HashMap<Integer, User> userIDHashMap = new HashMap<>(); // <uID, User>
+
+    // getters
+    public User getUser(int uID) {
+        if (userIDHashMap.getOrDefault(uID, null) != null) {
+            return userIDHashMap.get(uID);
+        }
+        return null;
+    }
+
+    public Task getTask(int taskId) {
+        if (taskIDHashMap.getOrDefault(taskId, null) != null) {
+            return (taskIDHashMap.get(taskId));
+        }
+        return null;
+    }
+
+    // setters
 
     public void addTask(Task task) {
         taskIDHashMap.put(task.getID(), task);

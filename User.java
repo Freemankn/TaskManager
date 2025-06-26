@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -16,6 +17,27 @@ public class User {
 
     public User(String name) {
         this(name, "None", null);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "User: " + getName() + "\n"
+                + "Role: " + getRole() + "\n"
+                + "UID: " + getuID() + "\n\n"
+                + "Tasks assigned:" + "\n"
+                + displayTasks() + "\n";
+    }
+
+    public String displayTasks() {
+        if (tasks == null) {
+            return "None";
+        }
+        String output = "";
+        for (Task t : tasks) {
+            output += t.toString();
+        }
+        return output;
     }
 
     // getters
@@ -41,7 +63,8 @@ public class User {
     }
 
     public void assignTask(Task task) {
-        this.tasks.add(task);
+        tasks = new ArrayList<Task>();
+        tasks.add(task);
     }
 
     // public void removeTask()

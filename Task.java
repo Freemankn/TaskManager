@@ -20,6 +20,16 @@ public class Task {
         this(title, "None", "None", TaskStatus.TODO, null);
     }
 
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "Task: " + getTitle() + "\n"
+                + "Description: " + getDescription() + "\n"
+                + "Due Date: " + getDueDate() + "\n"
+                + "Status: " + getStatus() + "\n"
+                + "ID: " + getID() + "\n";
+    }
+
     // Anytime, you create an id, the id counter increments by one. Should be static
 
     // title, description, dueDate, status, user should be part of the constructor
