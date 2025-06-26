@@ -16,7 +16,7 @@ public class User {
     }
 
     public User(String name) {
-        this(name, "None", null);
+        this(name, "None", new ArrayList<Task>());
     }
 
     @Override
@@ -30,14 +30,14 @@ public class User {
     }
 
     public String displayTasks() {
-        if (tasks == null) {
+        if (tasks.isEmpty()) {
             return "None";
         }
         String output = "";
         for (Task t : tasks) {
             output += t.toString();
         }
-        return output;
+        return output + "\n";
     }
 
     // getters
@@ -63,7 +63,6 @@ public class User {
     }
 
     public void assignTask(Task task) {
-        tasks = new ArrayList<Task>();
         tasks.add(task);
     }
 

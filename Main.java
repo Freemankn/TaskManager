@@ -24,8 +24,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // Task t1 = new Task();
-        // t1.displayInfo();
 
         // Going to be huge while loop
         // Inside the while I get description of the task, task name, due date, the user
@@ -45,9 +43,8 @@ public class Main {
 
         while (!option.equals("q")) {
             if (option.equals("addT")) {
-                System.out.println("Enter a title:");
-
                 // Title
+                System.out.println("Enter a title:");
                 option = scanner.nextLine();
                 task = new Task(option);
 
@@ -76,6 +73,51 @@ public class Main {
 
                 tm.addTask(task);
 
+            } else if (option.equals("editT")) {
+                System.out.println("Enter Task ID:");
+
+                // Fields
+                int taskID = scanner.nextInt();
+                scanner.nextLine();
+                String title = task.getTitle();
+                String description = task.getDescription();
+                String dueDate = task.getDueDate();
+
+                // Title
+
+                System.out.println("Would you like to edit the title? (y/n)");
+                option = scanner.nextLine();
+                if (option.equals("y")) {
+                    System.out.println("Enter Title:");
+                    option = scanner.nextLine();
+                    title = option;
+                }
+                lineBreak();
+
+                // Description
+                System.out.println("Would you like to edit the description? (y/n)");
+                option = scanner.nextLine();
+                if (option.equals("y")) {
+                    System.out.println("Enter description:");
+                    option = scanner.nextLine();
+                    description = option;
+                }
+                lineBreak();
+
+                // Due date
+                System.out.println("Would you like to edit the due date? (y/n)");
+                option = scanner.nextLine();
+                if (option.equals("y")) {
+                    System.out.println("Enter due date:");
+                    option = scanner.nextLine();
+                    dueDate = option;
+                }
+                lineBreak();
+
+                System.out.println("The task ID is: " + task.getID());
+                lineBreak();
+                tm.editTask(taskID, title, description, dueDate);
+
             } else if (option.equals("addU")) {
                 System.out.println("Enter the username:");
 
@@ -100,7 +142,6 @@ public class Main {
             } else if (option.equals("asgnT")) {
                 // Task ID
                 System.out.println("Enter Task ID:");
-                // scanner.nextLine();
                 int taskID = scanner.nextInt();
                 // User ID
                 System.out.println("Enter User ID:");
@@ -113,7 +154,7 @@ public class Main {
             prompt();
             option = scanner.nextLine(); // read entire line
         }
-        System.out.println(tm.getUser(1));
+        System.out.println(tm.getTask(1));
         // Assigning Users
 
     }

@@ -34,12 +34,10 @@ public class TaskManager {
 
     public void addTask(Task task) {
         taskIDHashMap.put(task.getID(), task);
-        // this.tasks.add(task);
     }
 
     public void addUser(User user) {
         userIDHashMap.put(user.getuID(), user);
-        // this.users.add(user);
     }
 
     public void assignTask(int taskId, int uID) {
@@ -52,8 +50,12 @@ public class TaskManager {
         // }
     }
 
-    public void editTask(int taskId, Task updatedTask) {
-        /* ... */ }
+    public void editTask(int taskId, String title, String description, String dueDate) {
+        taskIDHashMap.get(taskId).setTitle(title);
+        taskIDHashMap.get(taskId).setDescription(description);
+        taskIDHashMap.get(taskId).setDueDate(dueDate);
+        // taskIDHashMap.get(taskId).setStatus(status);
+    }
 
     public void deleteTask(int taskId) {
         /* ... */ }
