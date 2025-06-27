@@ -25,19 +25,19 @@ public class User {
         return "User: " + getName() + "\n"
                 + "Role: " + getRole() + "\n"
                 + "UID: " + getuID() + "\n\n"
-                + "Tasks assigned:" + "\n"
-                + displayTasks() + "\n";
+                + "Tasks assigned:\n"
+                + displayTasks();
     }
 
     public String displayTasks() {
         if (tasks.isEmpty()) {
-            return "None";
+            return "No tasks assigned.";
         }
         String output = "";
         for (Task t : tasks) {
-            output += t.toString();
+            output += "[ID: " + t.getID() + "] " + t.getTitle() + " (" + t.getStatus() + ")" + "\n";
         }
-        return output + "\n";
+        return output;
     }
 
     // getters
@@ -51,6 +51,10 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
     }
 
     // setters

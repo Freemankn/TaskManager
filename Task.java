@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task {
     private static int nextId = 1;
     private final int id;
@@ -5,29 +8,30 @@ public class Task {
     private String description;
     private String dueDate; // Keep as String or use LocalDate
     private TaskStatus status; // ✅ Use enum instead of String
-    private User assignedUser;
+    private List<User> assignedUsers;
 
-    public Task(String title, String description, String dueDate, TaskStatus status, User assignedUser) {
+    public Task(String title, String description, String dueDate, TaskStatus status, List<User> assignedUsers) {
         this.id = nextId++;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.status = status;
-        this.assignedUser = assignedUser;
+        this.assignedUsers = assignedUsers;
     }
 
     public Task(String title) {
-        this(title, "None", "None", TaskStatus.TODO, null);
+        this(title, "None", "None", TaskStatus.TODO, new ArrayList<User>());
     }
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return "Task: " + getTitle() + "\n"
+        return "--- Task ID: " + getID() + " ---\n" +
+                "Title: " + getTitle() + "\n"
+                + "Status: " + getStatus() + "\n"
                 + "Description: " + getDescription() + "\n"
                 + "Due Date: " + getDueDate() + "\n"
-                + "Status: " + getStatus() + "\n"
-                + "ID: " + getID() + "\n";
+                + "Assigned To: \n" + displayUsers() + "\n";
     }
 
     // Anytime, you create an id, the id counter increments by one. Should be static
@@ -36,14 +40,25 @@ public class Task {
 
     // private User
 
+    public String displayUsers() {
+        if (assignedUsers.isEmpty()) {
+            return "None";
+        }
+        String output = "";
+        for (User u : assignedUsers) {
+            output += u.getName() + "\n";
+        }
+        return output;
+    }
+
     // getters
 
     public int getID() {
         return id;
     }
 
-    public User getAssignedUser() {
-        return assignedUser;
+    public List<User> getAssignedUsers() {
+        return assignedUsers;
     }
 
     public String getDueDate() {
@@ -68,8 +83,8 @@ public class Task {
 
     // setters
 
-    public void setAssignedUser(User assignedUser) {
-        this.assignedUser = assignedUser;
+    public void assignUser(User assignedUser) {
+        this.assignedUsers.add(assignedUser);
     }
 
     public void setDescription(String description) {
