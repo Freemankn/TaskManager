@@ -12,15 +12,22 @@ public class Main {
         System.out.println("Would you like to add a task: command-> addT");
         System.out.println("Would you like to remove a task: command-> rmT");
         System.out.println("Would you like to edit a task: command-> editT");
+        System.out.println("Would you like view all task: command -> viewT");
         lineBreak();
 
         System.out.println("Would you like to add a user: command-> addU");
         System.out.println("Would you like to remove a user: command-> rmU");
+        System.out.println("Would you like to view all users: command-> viewU");
         lineBreak();
 
-        System.out.println("Would you like to assign a task to a User: command-> asgnT");
-        System.out.println("Would you like to unassign a task to a User: command-> unasgnT");
+        System.out.println("Would you like to assign a task to a user: command-> asgnT");
+        System.out.println("Would you like to assign a task to multiple users: command-> asgnMT");
         lineBreak();
+
+        System.out.println("Would you like to unassign a task to a User: command-> unasgnT");
+        System.out.println("Would you like to unassign a task to multiple users: command-> unasgnMT");
+        lineBreak();
+
         System.out.println("Type q to quit:");
     }
 
@@ -35,6 +42,7 @@ public class Main {
         User user = null;
         TaskManager tm = new TaskManager();
 
+        lineBreak();
         System.out.println("This is the CLI Task Manager tool");
         prompt();
 
@@ -43,7 +51,7 @@ public class Main {
         String option = scanner.nextLine(); // read entire line
 
         while (!option.equals("q")) {
-
+            lineBreak();
             switch (option) {
 
                 // Adding Tasks
@@ -74,19 +82,17 @@ public class Main {
                     }
                     lineBreak();
                     System.out.println("The task ID is: " + task.getID());
-                    lineBreak();
-
                     tm.addTask(task);
                 }
 
                 // Removing Tasks
-                // case "rmT" -> {
-                // System.out.println("Enter Task ID:");
+                case "rmT" -> {
+                    System.out.println("Enter Task ID:");
 
-                // int taskID = scanner.nextInt();
-                // scanner.nextLine();
-                // tm.deleteTask(taskID);
-                // }
+                    int taskID = scanner.nextInt();
+                    scanner.nextLine();
+                    tm.removeTask(taskID);
+                }
 
                 // Editing Tasks
                 case "editT" -> {
@@ -108,8 +114,6 @@ public class Main {
                         option = scanner.nextLine();
                         title = option;
                     }
-                    lineBreak();
-
                     // Description
                     System.out.println("Would you like to edit the description? (y/n)");
                     option = scanner.nextLine();
@@ -118,8 +122,6 @@ public class Main {
                         option = scanner.nextLine();
                         description = option;
                     }
-                    lineBreak();
-
                     // Due date
                     System.out.println("Would you like to edit the due date? (y/n)");
                     option = scanner.nextLine();
@@ -128,10 +130,7 @@ public class Main {
                         option = scanner.nextLine();
                         dueDate = option;
                     }
-                    lineBreak();
-
                     System.out.println("The task ID is: " + task.getID());
-                    lineBreak();
                     tm.editTask(taskID, title, description, dueDate);
                 }
 
@@ -154,9 +153,30 @@ public class Main {
                     }
                     lineBreak();
                     System.out.println("The user ID is: " + user.getuID());
-                    lineBreak();
-
                     tm.addUser(user);
+                }
+
+                // View All Users
+                case "viewU" -> {
+                    System.out.println(
+                            "How would you like to filter the users?\n" +
+                                    "1. By Role\n" +
+                                    "2. View All\n\n" +
+                                    "Enter your choice (1-2):");
+                    option = scanner.nextLine();
+                    switch (option) {
+                        case "1" -> {
+                            System.out.println("Enter Role: ");
+                            String role = scanner.nextLine();
+                            tm.viewUsersByRole(role);
+                        }
+                        case "2" -> {
+                            tm.viewUsers();
+                        }
+                        default -> {
+                            System.out.println("Invalid option.");
+                        }
+                    }
                 }
 
                 // Assigning Users
@@ -167,25 +187,61 @@ public class Main {
                     // User ID
                     System.out.println("Enter User ID:");
                     int uID = scanner.nextInt();
-                    lineBreak();
-
-                    tm.assignTask(taskID, uID);
+                    scanner.nextLine();
+                    tm.assignTasktoUser(taskID, uID);
                 }
 
                 // Unassigning Users
-                // case "unasgnT" -> {
-                // System.out.println("Enter Task ID:");
-                // int taskID = scanner.nextInt();
-                // tm.unassignTask(taskID);
-                // }
+                case "unasgnT" -> {
+                    System.out.println("Enter Task ID:");
+                    int taskID = scanner.nextInt();
+
+                }
+
+                case "viewT" -> {
+                    System.out.println(
+                            "How would you like to filter the tasks?\n" +
+                                    "1. By Status\n" +
+                                    "2. By Due Date\n" +
+                                    "3. By Assigned User\n" +
+                                    "4. View All\n\n" +
+                                    "Enter your choice (1-4):");
+                    option = scanner.nextLine();
+                    switch (option) {
+                        case "1" -> {
+                            System.out.println("Enter status (TODO, IN_PROGRESS, DONE):");
+                            TaskStatus status = TaskStatus.valueOf(scanner.nextLine().toUpperCase());
+                            tm.viewTasksByStatus(status);
+                        }
+                        case "2" -> {
+                            System.out.println("Enter due date (YYYY-MM-DD): ");
+                            String dueDate = scanner.nextLine();
+                            tm.viewTasksByDueDate(dueDate);
+                        }
+                        case "3" -> {
+                            System.out.println("Enter user UID:");
+                            int uID = scanner.nextInt();
+                            scanner.nextLine();
+                            tm.viewTasksByUser(uID);
+                        }
+                        case "4" -> {
+                            tm.viewTasks();
+                        }
+                        default -> {
+                            System.out.println("Invalid option.");
+                        }
+                    }
+                }
 
                 default -> {
                     System.out.println("Invalid option.");
                 }
             }
+            lineBreak();
             prompt();
             option = scanner.nextLine(); // read entire line
         }
+        lineBreak();
         System.out.println(tm.getUser(1));
         // Assigning Users
     }

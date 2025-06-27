@@ -25,12 +25,20 @@ public class TaskManager {
         return taskIDHashMap.get(taskId);
     }
 
-    public List<User> getUsersAssignedToTask(int taskId) {
-        return getTask(taskId).getAssignedUsers();
+    public ArrayList<Integer> getUIDsAssignedToTask(int taskId) {
+        ArrayList<Integer> uIDs = new ArrayList<Integer>();
+        for (User user : getTask(taskId).getAssignedUsers()) {
+            uIDs.add(user.getuID());
+        }
+        return uIDs;
     }
 
-    public List<Task> getTasksAssignedToUser(int userId) {
-        return getUser(userId).getTasks();
+    public ArrayList<Integer> getTaskIDsAssignedToUser(int userId) {
+        ArrayList<Integer> taskIDs = new ArrayList<Integer>();
+        for (Task task : getUser(userId).getTasks()) {
+            taskIDs.add(task.getID());
+        }
+        return taskIDs;
     }
 
     // setters
@@ -43,18 +51,20 @@ public class TaskManager {
         userIDHashMap.put(user.getuID(), user);
     }
 
-    public void assignTask(int taskId, int uID) {
+    public void assignTasktoUser(int taskId, int uID) {
         if (!getTask(taskId).getAssignedUsers().contains(getUser(uID))) {
             getTask(taskId).assignUser(getUser(uID));
             getUser(uID).assignTask(getTask(taskId));
         }
     }
 
-    public void assignTasktoUsers(int taskId, int[] uIDs) {
-        for (int uID : uIDs) {
-            assignTask(taskId, uID);
+    public void assignTasktoUsers(int taskId, ArrayList<Integer> uIDs) {
+        for (Integer uID : uIDs) {
+            assignTasktoUser(taskId, uID);
         }
     }
+
+    // Edit Task/User
 
     public void editTask(int taskId, String title, String description, String dueDate) {
         getTask(taskId).setTitle(title);
@@ -62,15 +72,27 @@ public class TaskManager {
         getTask(taskId).setDueDate(dueDate);
     }
 
-    // public void unassignTask(int taskId) {
-    // Task task = getTask(taskId);
-    // task.getAssignedUsers().unassignTask(task);
-    // }
+    // Unassign Task/User
 
-    // public void deleteTask(int taskId) {
-    // unassignTask(taskId);
-    // taskIDHashMap.remove(taskId);
-    // }
+    public void unassignTaskFromUser(int taskId, int uID) {
+        if (getTask(taskId).getAssignedUsers().contains(getUser(uID))) {
+            getTask(taskId).unassignUser(getUser(uID));
+            getUser(uID).unassignTask(getTask(taskId));
+        }
+    }
+
+    public void unassignTaskFromUsers(int taskId, ArrayList<Integer> uIDs) {
+        for (Integer uID : uIDs) {
+            unassignTaskFromUser(taskId, uID);
+        }
+    }
+
+    // Remove Task/User
+
+    public void removeTask(int taskId) {
+        unassignTaskFromUsers(taskId, getUIDsAssignedToTask(taskId));
+        taskIDHashMap.remove(taskId);
+    }
 
     // Status
 
@@ -88,7 +110,7 @@ public class TaskManager {
         getTask(taskID).setDueDate(dueDate);
     }
 
-    // Filtering
+    // Filtering Tasks
 
     public void viewTasksByStatus(TaskStatus status) {
         System.out.println("Filtered Tasks with status:" + status);
@@ -137,6 +159,19 @@ public class TaskManager {
         }
     }
 
+    // Filtering Users
+
+    public void viewUsersByRole(String role) {
+        System.out.println("All Users with role: " + role);
+        for (User user : userIDHashMap.values()) {
+            if (user.getRole().equals(role)) {
+                System.out.println("[User ID: " + user.getuID() + "] " + user.getName());
+            } else {
+                continue;
+            }
+        }
+    }
+
     // View User
 
     public void viewUser(int uID) {
@@ -149,7 +184,4 @@ public class TaskManager {
             System.out.println("[User ID: " + user.getuID() + "] " + user.getName() + " (" + user.getRole() + ")");
         }
     }
-
-    // public List<Task> getTasksByStatus(String status) {
-    // /* ... */ }
 }

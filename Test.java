@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Test {
     public static void main(String[] args) {
 
@@ -11,6 +14,9 @@ public class Test {
         User u1 = new User("Freeman");
         User u2 = new User("Aaron");
 
+        u1.setRole("Admin");
+        u2.setRole("Admin");
+
         tm.addTask(t1);
         tm.addTask(t2);
         tm.addTask(t3);
@@ -18,11 +24,11 @@ public class Test {
         tm.addUser(u1);
         tm.addUser(u2);
 
-        tm.assignTask(t1.getID(), u1.getuID());
-        tm.assignTask(t2.getID(), u1.getuID());
+        tm.assignTasktoUser(t1.getID(), u1.getuID());
+        tm.assignTasktoUser(t2.getID(), u1.getuID());
 
-        tm.assignTask(t1.getID(), u2.getuID());
-        tm.assignTask(t2.getID(), u2.getuID());
+        tm.assignTasktoUser(t1.getID(), u2.getuID());
+        tm.assignTasktoUser(t2.getID(), u2.getuID());
 
         tm.markTaskComplete(t1.getID());
         tm.markTaskInProg(t2.getID());
@@ -34,9 +40,22 @@ public class Test {
 
         // tm.viewTasks();
 
+        tm.viewTask(t1.getID());
+        tm.viewUser(u1.getuID());
+
+        tm.removeTask(t1.getID());
+
+        System.out.println();
+
+        tm.viewTask(t1.getID());
+
+        tm.viewUser(u1.getuID());
+
         // tm.viewUsers();
 
-        tm.viewUser(1);
+        // tm.viewUser(1);
+
+        // tm.viewUsersByRole("Admin");
 
         // tm.viewTasksByStatus(TaskStatus.IN_PROGRESS);
 

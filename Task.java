@@ -84,7 +84,11 @@ public class Task {
     // setters
 
     public void assignUser(User assignedUser) {
-        this.assignedUsers.add(assignedUser);
+        assignedUsers.add(assignedUser);
+    }
+
+    public void unassignUser(User assignedUser) {
+        assignedUsers.remove(assignedUser);
     }
 
     public void setDescription(String description) {
