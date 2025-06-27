@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 //It acts as the central controller that:
@@ -12,8 +13,8 @@ import java.util.List;
 public class TaskManager {
     // private List<Task> tasks = new ArrayList<>();
     // private List<User> users = new ArrayList<>();
-    private HashMap<Integer, Task> taskIDHashMap = new HashMap<>(); // <id, Task>
-    private HashMap<Integer, User> userIDHashMap = new HashMap<>(); // <uID, User>
+    private LinkedHashMap<Integer, Task> taskIDHashMap = new LinkedHashMap<>(); // <id, Task>
+    private LinkedHashMap<Integer, User> userIDHashMap = new LinkedHashMap<>(); // <uID, User>
 
     // getters
     public User getUser(int uID) {
@@ -85,6 +86,68 @@ public class TaskManager {
 
     public void setDueDate(int taskID, String dueDate) {
         getTask(taskID).setDueDate(dueDate);
+    }
+
+    // Filtering
+
+    public void viewTasksByStatus(TaskStatus status) {
+        System.out.println("Filtered Tasks with status:" + status);
+        for (Task task : taskIDHashMap.values()) {
+            if (task.getStatus() == status) {
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+            } else {
+                continue;
+            }
+        }
+    }
+
+    public void viewTasksByDueDate(String dueDate) {
+        System.out.println("Tasks due on: " + dueDate);
+        for (Task task : taskIDHashMap.values()) {
+            if (task.getDueDate().equals(dueDate)) {
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+            } else {
+                continue;
+            }
+        }
+    }
+
+    public void viewTasksByUser(int uID) {
+        System.out.println("Tasks assigned to " + getUser(uID).getName() + ":");
+        for (Task task : taskIDHashMap.values()) {
+            if (task.getAssignedUsers().contains(getUser(uID))) {
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" +
+                        task.getStatus() + ")");
+            } else {
+                continue;
+            }
+        }
+    }
+
+    // View Tasks
+
+    public void viewTask(int taskID) {
+        System.out.println(taskIDHashMap.get(taskID));
+    }
+
+    public void viewTasks() {
+        System.out.println("All Tasks:");
+        for (Task task : taskIDHashMap.values()) {
+            System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+        }
+    }
+
+    // View User
+
+    public void viewUser(int uID) {
+        System.out.println(userIDHashMap.get(uID));
+    }
+
+    public void viewUsers() {
+        System.out.println("All Users:");
+        for (User user : userIDHashMap.values()) {
+            System.out.println("[User ID: " + user.getuID() + "] " + user.getName() + " (" + user.getRole() + ")");
+        }
     }
 
     // public List<Task> getTasksByStatus(String status) {

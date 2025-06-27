@@ -22,7 +22,8 @@ public class User {
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return "User: " + getName() + "\n"
+        return "--- User ID: " + getuID() + " ---\n"
+                + "Name: " + getName() + "\n"
                 + "Role: " + getRole() + "\n"
                 + "UID: " + getuID() + "\n\n"
                 + "Tasks assigned:\n"
