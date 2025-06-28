@@ -1,13 +1,29 @@
 import java.util.ArrayList;
 import java.util.List;
 
+// ------------------------------------------------------------
+// 👤 User: Represents a system user
+// ------------------------------------------------------------
+// - Has a unique ID, name, and role
+// - Maintains a list of tasks assigned
+// - Supports task assignment and removal
+// ------------------------------------------------------------
+
 public class User {
+    // --------------------------------------------------------
+    // 🔒 Fields
+    // --------------------------------------------------------
     private static int nextId = 1;
     private final int uID; // Unique ID for internal reference
     private String name; // User's name (e.g., "Onyx")
     private String role; // Role in the system
     private List<Task> tasks; // Tasks assigned to the user
 
+    // --------------------------------------------------------
+    // 🏗️ Constructors
+    // --------------------------------------------------------
+
+    // 🔹 Full constructor
     public User(String name, String role, List<Task> tasks) {
         this.uID = nextId++;
         this.name = name;
@@ -15,13 +31,17 @@ public class User {
         this.tasks = tasks;
     }
 
+    // 🔹 Default role and empty task list
     public User(String name) {
         this(name, "None", new ArrayList<Task>());
     }
 
+    // --------------------------------------------------------
+    // 🧾 Display
+    // --------------------------------------------------------
+
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return "--- User ID: " + getuID() + " ---\n"
                 + "Name: " + getName() + "\n"
                 + "Role: " + getRole() + "\n"
@@ -34,6 +54,7 @@ public class User {
         if (tasks.isEmpty()) {
             return "No tasks assigned.";
         }
+
         String output = "";
         for (Task t : tasks) {
             output += "[ID: " + t.getID() + "] " + t.getTitle() + " (" + t.getStatus() + ")" + "\n";
@@ -41,7 +62,9 @@ public class User {
         return output;
     }
 
-    // getters
+    // --------------------------------------------------------
+    // 📥 Getters
+    // --------------------------------------------------------
     public int getuID() {
         return uID;
     }
@@ -58,7 +81,9 @@ public class User {
         return tasks;
     }
 
-    // setters
+    // --------------------------------------------------------
+    // ✏️ Setters
+    // --------------------------------------------------------
     public void setName(String name) {
         this.name = name;
     }
@@ -67,6 +92,9 @@ public class User {
         this.role = role;
     }
 
+    // --------------------------------------------------------
+    // 🔗 Task Management
+    // --------------------------------------------------------
     public void assignTask(Task task) {
         tasks.add(task);
     }
@@ -74,7 +102,4 @@ public class User {
     public void unassignTask(Task task) {
         tasks.remove(task);
     }
-
-    // public void removeTask()
-
 }

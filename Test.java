@@ -39,6 +39,8 @@ public class Test {
         tm.setDueDate(t4.getID(), "6/26/25");
 
         tm.viewTasks();
+        tm.removeMultipleTasks(new ArrayList<Integer>(List.of(t1.getID(), t2.getID(), t3.getID())));
+        tm.viewTasks();
 
         // tm.viewTask(t1.getID());
         // tm.viewUser(u1.getuID());
