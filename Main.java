@@ -1,6 +1,9 @@
+import java.util.ArrayList;
 import java.util.Scanner; // ✅ Import statements must go OUTSIDE the class
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map;
 
 public class Main {
 
@@ -29,6 +32,23 @@ public class Main {
         lineBreak();
 
         System.out.println("Type q to quit:");
+    }
+
+    static TaskInput requestMultipleUIDs(Scanner scanner) {
+        System.out.println("Enter Task ID:");
+        int taskID = scanner.nextInt();
+        scanner.nextLine();
+        lineBreak();
+        // User ID
+        System.out.println("Enter Multiple User IDs (seperated by commas) like this 1,2,3 :");
+
+        ArrayList<Integer> uIDS = new ArrayList<Integer>();
+        String[] nums = scanner.nextLine().split(","); // ← grab exactly one line
+
+        for (String num : nums) {
+            uIDS.add(Integer.parseInt(num.trim()));
+        }
+        return new TaskInput(taskID, uIDS);
     }
 
     public static void main(String[] args) {
@@ -88,7 +108,6 @@ public class Main {
                 // Removing Tasks
                 case "rmT" -> {
                     System.out.println("Enter Task ID:");
-
                     int taskID = scanner.nextInt();
                     scanner.nextLine();
                     tm.removeTask(taskID);
@@ -134,7 +153,7 @@ public class Main {
                     tm.editTask(taskID, title, description, dueDate);
                 }
 
-                // Adding Users
+                // Adding a User
                 case "addU" -> {
                     System.out.println("Enter the username:");
 
@@ -146,6 +165,7 @@ public class Main {
                     lineBreak();
                     System.out.println("Would you like to add a role? (y/n)");
                     option = scanner.nextLine();
+                    lineBreak();
                     if (option.equals("y")) {
                         System.out.println("Enter role:");
                         option = scanner.nextLine();
@@ -179,11 +199,12 @@ public class Main {
                     }
                 }
 
-                // Assigning Users
+                // Assigning a Single User
                 case "asgnT" -> {
                     // Task ID
                     System.out.println("Enter Task ID:");
                     int taskID = scanner.nextInt();
+                    lineBreak();
                     // User ID
                     System.out.println("Enter User ID:");
                     int uID = scanner.nextInt();
@@ -191,11 +212,29 @@ public class Main {
                     tm.assignTasktoUser(taskID, uID);
                 }
 
-                // Unassigning Users
+                case "asgnMT" -> {
+                    TaskInput input = requestMultipleUIDs(scanner);
+                    tm.assignTasktoUsers(input.getTaskID(), input.getUIDS());
+                }
+
+                // Unassigning a Single User
                 case "unasgnT" -> {
+                    // Task ID
                     System.out.println("Enter Task ID:");
                     int taskID = scanner.nextInt();
+                    scanner.nextLine();
+                    lineBreak();
+                    // User ID
+                    System.out.println("Enter User ID:");
+                    int uID = scanner.nextInt();
+                    scanner.nextLine();
+                    tm.unassignTaskFromUser(taskID, uID);
 
+                }
+
+                case "unasgnMT" -> {
+                    TaskInput input = requestMultipleUIDs(scanner);
+                    tm.unassignTaskFromUsers(input.getTaskID(), input.getUIDS());
                 }
 
                 case "viewT" -> {
@@ -241,8 +280,9 @@ public class Main {
             prompt();
             option = scanner.nextLine(); // read entire line
         }
+        scanner.close();
         lineBreak();
-        System.out.println(tm.getUser(1));
+        // System.out.println(tm.);
         // Assigning Users
     }
 }

@@ -38,18 +38,18 @@ public class Test {
         tm.setDueDate(t3.getID(), "6/26/25");
         tm.setDueDate(t4.getID(), "6/26/25");
 
-        // tm.viewTasks();
+        tm.viewTasks();
 
-        tm.viewTask(t1.getID());
-        tm.viewUser(u1.getuID());
+        // tm.viewTask(t1.getID());
+        // tm.viewUser(u1.getuID());
 
-        tm.removeTask(t1.getID());
+        // tm.removeTask(t1.getID());
 
-        System.out.println();
+        // System.out.println();
 
-        tm.viewTask(t1.getID());
+        // tm.viewTask(t1.getID());
 
-        tm.viewUser(u1.getuID());
+        // tm.viewUser(u1.getuID());
 
         // tm.viewUsers();
 
