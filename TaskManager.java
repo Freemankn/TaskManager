@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 // ------------------------------------------------------------
 // 🧠 TaskManager: Central Controller for Tasks and Users
@@ -176,12 +174,9 @@ public class TaskManager {
     // 📊 Status / Due Date Updates
     // --------------------------------------------------------
     // 🔹 Modify task progress or deadlines
-    public void markTaskComplete(int taskID) {
-        getTask(taskID).setStatus(TaskStatus.DONE);
-    }
 
-    public void markTaskInProg(int taskID) {
-        getTask(taskID).setStatus(TaskStatus.IN_PROGRESS);
+    public void setStatus(int taskID, TaskStatus status) {
+        getTask(taskID).setStatus(status);
     }
 
     public void setDueDate(int taskID, String dueDate) {
@@ -197,7 +192,8 @@ public class TaskManager {
         System.out.println("Filtered Tasks with status:" + status);
         for (Task task : taskIDHashMap.values()) {
             if (task.getStatus() == status) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -207,7 +203,8 @@ public class TaskManager {
         System.out.println("Tasks due on: " + dueDate);
         for (Task task : taskIDHashMap.values()) {
             if (task.getDueDate().equals(dueDate)) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -217,7 +214,8 @@ public class TaskManager {
         System.out.println("Tasks assigned to " + getUser(uID).getName() + ":");
         for (Task task : taskIDHashMap.values()) {
             if (task.getAssignedUsers().contains(getUser(uID))) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -243,7 +241,8 @@ public class TaskManager {
     public void viewTasks() {
         System.out.println("All Tasks:");
         for (Task task : taskIDHashMap.values()) {
-            System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+            System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                    + " Assigned to " + task.displayUsers());
         }
     }
 

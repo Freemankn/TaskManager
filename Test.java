@@ -30,8 +30,7 @@ public class Test {
         tm.assignTasktoUser(t1.getID(), u2.getuID());
         tm.assignTasktoUser(t2.getID(), u2.getuID());
 
-        tm.markTaskComplete(t1.getID());
-        tm.markTaskInProg(t2.getID());
+        tm.setStatus(1, TaskStatus.IN_PROGRESS);
 
         tm.setDueDate(t1.getID(), "6/25/25");
         tm.setDueDate(t2.getID(), "6/25/25");
