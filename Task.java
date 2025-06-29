@@ -31,7 +31,7 @@ public class Task {
                 + "Status: " + getStatus() + "\n"
                 + "Description: " + getDescription() + "\n"
                 + "Due Date: " + getDueDate() + "\n"
-                + "Assigned To: \n" + displayUsers() + "\n";
+                + "Assigned To: " + displayUsers() + "\n";
     }
 
     // Anytime, you create an id, the id counter increments by one. Should be static
@@ -42,11 +42,11 @@ public class Task {
 
     public String displayUsers() {
         if (assignedUsers.isEmpty()) {
-            return "None";
+            return "No users";
         }
         String output = "";
         for (User u : assignedUsers) {
-            output += u.getName() + "\n";
+            output += u.getName();
         }
         return output;
     }

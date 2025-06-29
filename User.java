@@ -33,7 +33,7 @@ public class User {
 
     // 🔹 Default role and empty task list
     public User(String name) {
-        this(name, "None", new ArrayList<Task>());
+        this(name, "No Role", new ArrayList<Task>());
     }
 
     // --------------------------------------------------------
@@ -46,18 +46,17 @@ public class User {
                 + "Name: " + getName() + "\n"
                 + "Role: " + getRole() + "\n"
                 + "UID: " + getuID() + "\n\n"
-                + "Tasks assigned:\n"
-                + displayTasks();
+                + "Tasks assigned:" + displayTasks() + "\n";
     }
 
     public String displayTasks() {
         if (tasks.isEmpty()) {
-            return "No tasks assigned.";
+            return "None";
         }
 
         String output = "";
         for (Task t : tasks) {
-            output += "[ID: " + t.getID() + "] " + t.getTitle() + " (" + t.getStatus() + ")" + "\n";
+            output += "[ID: " + t.getID() + "] " + t.getTitle() + " (" + t.getStatus() + ")";
         }
         return output;
     }

@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 // ------------------------------------------------------------
 // 🧠 TaskManager: Central Controller for Tasks and Users
@@ -51,14 +49,34 @@ public class TaskManager {
     // 🔗 Link / Unlink Tasks and Users
     // --------------------------------------------------------
     // 🔹 Used internally to maintain two-way relationships
-    public void unlinkUserTask(int taskID, int uID) {
+    private void unlinkUserToTask(int taskID, int uID) {
         getTask(taskID).unassignUser(getUser(uID));
         getUser(uID).unassignTask(getTask(taskID));
     }
 
-    public void linkUserTask(int taskID, int uID) {
+    private void linkUserToTask(int taskID, int uID) {
         getTask(taskID).assignUser(getUser(uID));
         getUser(uID).assignTask(getTask(taskID));
+    }
+
+    // --------------------------------------------------------
+    // 🔗 Task and User checker
+    // --------------------------------------------------------
+
+    public boolean containsTask(int taskID) {
+        Task task = getTask(taskID);
+        if (task == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean containsUser(int uID) {
+        User user = getUser(uID);
+        if (user == null) {
+            return false;
+        }
+        return true;
     }
 
     // --------------------------------------------------------
@@ -79,7 +97,13 @@ public class TaskManager {
     // 🔹 Assign one or many users to a task and vice versa
     public void assignTasktoUser(int taskID, int uID) {
         if (!getTask(taskID).getAssignedUsers().contains(getUser(uID))) {
-            linkUserTask(taskID, uID);
+            linkUserToTask(taskID, uID);
+        }
+    }
+
+    private void assignUsertoTask(int uID, int taskID) {
+        if (!getUser(uID).getTasks().contains(getTask(taskID))) {
+            assignTasktoUser(taskID, uID);
         }
     }
 
@@ -89,15 +113,55 @@ public class TaskManager {
         }
     }
 
-    public void assignUsertoTask(int uID, int taskID) {
-        if (!getUser(uID).getTasks().contains(getTask(taskID))) {
-            linkUserTask(taskID, uID);
+    public void assignTaskstoUser(int uID, ArrayList<Integer> taskIDs) {
+        for (Integer taskID : taskIDs) {
+            assignUsertoTask(uID, taskID);
         }
     }
 
-    public void assignUserstoTask(int taskID, ArrayList<Integer> uIDs) {
+    public void assignTaskstoUsers(ArrayList<Integer> uIDs, ArrayList<Integer> taskIDs) {
+        for (Integer taskID : taskIDs) {
+            for (Integer uID : uIDs) {
+                assignTasktoUser(taskID, uID);
+            }
+        }
+    }
+
+    // --------------------------------------------------------
+    // ❌ Unassignments
+    // --------------------------------------------------------
+
+    // 🔹 Unassign Task(s) from User (from user's perspective)
+    public void unassignTaskFromUser(int uID, int taskID) {
+        if (getUser(uID).getTasks().contains(getTask(taskID))) {
+            unlinkUserToTask(taskID, uID);
+        }
+    }
+
+    // 🔹 Unassign User(s) from Task (from task's perspective)
+    private void unassignUserFromTask(int taskID, int uID) {
+        if (getTask(taskID).getAssignedUsers().contains(getUser(uID))) {
+            unassignUserFromTask(taskID, uID);
+        }
+    }
+
+    public void unassignUsersFromTask(int taskID, ArrayList<Integer> uIDs) {
         for (Integer uID : uIDs) {
-            assignUsertoTask(taskID, uID);
+            unassignUserFromTask(taskID, uID);
+        }
+    }
+
+    public void unassignTasksFromUser(int uID, ArrayList<Integer> taskIDs) {
+        for (Integer taskID : taskIDs) {
+            unassignTaskFromUser(uID, taskID);
+        }
+    }
+
+    void unassignTasksFromUsers(ArrayList<Integer> uIDs, ArrayList<Integer> taskIDs) {
+        for (Integer taskID : taskIDs) {
+            for (Integer uID : uIDs) {
+                unassignTaskFromUser(taskID, uID);
+            }
         }
     }
 
@@ -114,36 +178,6 @@ public class TaskManager {
     public void editUser(int userID, String name, String role) {
         getUser(userID).setName(name);
         getUser(userID).setRole(role);
-    }
-
-    // --------------------------------------------------------
-    // ❌ Unassignments
-    // --------------------------------------------------------
-
-    // 🔹 Unassign User(s) from Task (from task's perspective)
-    public void unassignUserFromTask(int taskID, int uID) {
-        if (getTask(taskID).getAssignedUsers().contains(getUser(uID))) {
-            unlinkUserTask(taskID, uID);
-        }
-    }
-
-    public void unassignUsersFromTask(int taskID, ArrayList<Integer> uIDs) {
-        for (Integer uID : uIDs) {
-            unassignUserFromTask(taskID, uID);
-        }
-    }
-
-    // 🔹 Unassign Task(s) from User (from user's perspective)
-    public void unassignTaskFromUser(int uID, int taskID) {
-        if (getUser(uID).getTasks().contains(getTask(taskID))) {
-            unlinkUserTask(taskID, uID);
-        }
-    }
-
-    public void unassignTasksFromUser(int uID, ArrayList<Integer> taskIDs) {
-        for (Integer taskID : taskIDs) {
-            unassignTaskFromUser(uID, taskID);
-        }
     }
 
     // --------------------------------------------------------
@@ -176,12 +210,9 @@ public class TaskManager {
     // 📊 Status / Due Date Updates
     // --------------------------------------------------------
     // 🔹 Modify task progress or deadlines
-    public void markTaskComplete(int taskID) {
-        getTask(taskID).setStatus(TaskStatus.DONE);
-    }
 
-    public void markTaskInProg(int taskID) {
-        getTask(taskID).setStatus(TaskStatus.IN_PROGRESS);
+    public void setStatus(int taskID, TaskStatus status) {
+        getTask(taskID).setStatus(status);
     }
 
     public void setDueDate(int taskID, String dueDate) {
@@ -197,7 +228,8 @@ public class TaskManager {
         System.out.println("Filtered Tasks with status:" + status);
         for (Task task : taskIDHashMap.values()) {
             if (task.getStatus() == status) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -207,7 +239,8 @@ public class TaskManager {
         System.out.println("Tasks due on: " + dueDate);
         for (Task task : taskIDHashMap.values()) {
             if (task.getDueDate().equals(dueDate)) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -217,7 +250,8 @@ public class TaskManager {
         System.out.println("Tasks assigned to " + getUser(uID).getName() + ":");
         for (Task task : taskIDHashMap.values()) {
             if (task.getAssignedUsers().contains(getUser(uID))) {
-                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+                System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                        + " Assigned to " + task.displayUsers());
             }
         }
     }
@@ -243,7 +277,8 @@ public class TaskManager {
     public void viewTasks() {
         System.out.println("All Tasks:");
         for (Task task : taskIDHashMap.values()) {
-            System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")");
+            System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
+                    + " Assigned to " + task.displayUsers());
         }
     }
 
