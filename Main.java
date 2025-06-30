@@ -143,6 +143,19 @@ public class Main {
         return uID;
     }
 
+    static boolean askYesOrNo(Scanner scanner, String question) {
+        while (true) {
+            System.out.println(question + " (y/n):");
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("y"))
+                return true;
+            if (input.equals("n"))
+                return false;
+            System.out.println("Please enter 'y' or 'n'.");
+            lineBreak();
+        }
+    }
+
     // --------------------------------------------------------
     // 🚦 Main Loop
     // --------------------------------------------------------
@@ -177,9 +190,8 @@ public class Main {
                     task = new Task(option);
 
                     lineBreak();
-                    System.out.println("Would you like to add a description? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    boolean isYes = askYesOrNo(scanner, "Would you like to add a description?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter description:");
                         option = scanner.nextLine();
@@ -187,9 +199,8 @@ public class Main {
                     }
                     lineBreak();
 
-                    System.out.println("Would you like to set a due date? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    isYes = askYesOrNo(scanner, "Would you like to set a due date?");
+                    if (isYes) {
                         lineBreak();
                         try {
                             System.out.println("Enter due date (YYYY-MM-DD):");
@@ -201,12 +212,14 @@ public class Main {
 
                     }
                     tm.addTask(task);
+                    System.out.println("Task ID: " + task.getID() + " has been added");
                 }
 
                 case "rmT" -> {
                     int taskID = requestTaskID(scanner);
                     if (!validateTask(tm, taskID))
                         break;
+                    System.out.println("Task ID: " + task.getID() + " has been removed");
                     tm.removeTask(taskID);
                 }
 
@@ -214,6 +227,7 @@ public class Main {
                     ArrayList<Integer> taskIDs = requestMultipleIDs(scanner, "task");
                     taskIDs.removeIf(taskid -> !tm.containsTask(taskid));
                     tm.removeMultipleTasks(taskIDs);
+                    System.out.println("These tasks have been removed");
                 }
 
                 case "editT" -> {
@@ -227,27 +241,24 @@ public class Main {
                     LocalDate dueDate = task.getDueDate();
                     lineBreak();
 
-                    System.out.println("Would you like to edit the title? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    boolean isYes = askYesOrNo(scanner, "Would you like to edit the title?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter Title:");
                         title = scanner.nextLine();
                     }
                     lineBreak();
 
-                    System.out.println("Would you like to edit the description? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    isYes = askYesOrNo(scanner, "Would you like to edit the description?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter description:");
                         description = scanner.nextLine();
                     }
                     lineBreak();
 
-                    System.out.println("Would you like to edit the due date? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    isYes = askYesOrNo(scanner, "Would you like to edit the due date? (y/n)");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter due date:");
                         dueDate = LocalDate.parse(scanner.nextLine());
@@ -277,20 +288,21 @@ public class Main {
                     user = new User(option);
 
                     lineBreak();
-                    System.out.println("Would you like to add a role? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    boolean isYes = askYesOrNo(scanner, "Would you like to add a role?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter role:");
                         user.setRole(scanner.nextLine());
                     }
                     tm.addUser(user);
+                    System.out.println("UID: " + user.getuID() + " has been added");
                 }
 
                 case "rmU" -> {
                     int uID = requestUID(scanner);
                     if (!validateUser(tm, uID))
                         break;
+                    System.out.println("UID: " + user.getuID() + " has been removed");
                     tm.removeUser(uID);
                 }
 
@@ -298,6 +310,8 @@ public class Main {
                     ArrayList<Integer> uIDs = requestMultipleIDs(scanner, "user");
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.removeMultipleUsers(uIDs);
+                    System.out.println("These users have been removed");
+
                 }
 
                 case "editU" -> {
@@ -310,18 +324,16 @@ public class Main {
                     String role = user.getRole();
                     lineBreak();
 
-                    System.out.println("Would you like to edit the name? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    boolean isYes = askYesOrNo(scanner, "Would you like to edit the name?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter name:");
                         name = scanner.nextLine();
                     }
                     lineBreak();
 
-                    System.out.println("Would you like to edit the role? (y/n)");
-                    option = scanner.nextLine();
-                    if (option.equals("y")) {
+                    isYes = askYesOrNo(scanner, "Would you like to edit the role?");
+                    if (isYes) {
                         lineBreak();
                         System.out.println("Enter Role:");
                         role = scanner.nextLine();
@@ -340,6 +352,7 @@ public class Main {
                     if (!validateTaskAndUser(tm, taskID, uID))
                         break;
                     tm.assignTasktoUser(taskID, uID);
+                    System.out.println("Task assgined");
                 }
 
                 case "asgnMU" -> {
@@ -348,6 +361,7 @@ public class Main {
                         break;
                     input.getUIDS().removeIf(uID -> !tm.containsUser(uID));
                     tm.assignTasktoUsers(input.getTaskID(), input.getUIDS());
+                    System.out.println("Task assgined to users");
                 }
 
                 case "asgnMT" -> {
@@ -356,6 +370,7 @@ public class Main {
                         break;
                     input.getTaskIDS().removeIf(taskID -> !tm.containsUser(taskID));
                     tm.assignTaskstoUser(input.getUID(), input.getTaskIDS());
+                    System.out.println("Tasks assgined");
                 }
 
                 case "asgnMTU" -> {
@@ -364,6 +379,7 @@ public class Main {
                     taskIDs.removeIf(taskID -> !tm.containsTask(taskID));
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.assignTaskstoUsers(uIDs, taskIDs);
+                    System.out.println("Tasks assgined to users");
                 }
 
                 // --------------------------------------------
@@ -377,6 +393,7 @@ public class Main {
                     if (!validateTaskAndUser(tm, taskID, uID))
                         break;
                     tm.unassignTaskFromUser(uID, taskID);
+                    System.out.println("Task unassgined");
                 }
 
                 case "unasgnMU" -> {
@@ -385,6 +402,8 @@ public class Main {
                         break;
                     input.getUIDS().removeIf(uID -> !tm.containsUser(uID));
                     tm.unassignUsersFromTask(input.getTaskID(), input.getUIDS());
+                    System.out.println("Task unassgined to users");
+
                 }
 
                 case "unasgnMT" -> {
@@ -393,6 +412,8 @@ public class Main {
                         break;
                     input.getTaskIDS().removeIf(taskID -> !tm.containsUser(taskID));
                     tm.unassignTasksFromUser(input.getUID(), input.getTaskIDS());
+                    System.out.println("Tasks unassgined");
+
                 }
 
                 case "unasgnMTU" -> {
@@ -401,6 +422,8 @@ public class Main {
                     taskIDs.removeIf(taskID -> !tm.containsTask(taskID));
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.unassignTasksFromUsers(uIDs, taskIDs);
+                    System.out.println("Tasks unassgined to users");
+
                 }
 
                 // --------------------------------------------
