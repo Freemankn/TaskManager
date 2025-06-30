@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -169,7 +170,7 @@ public class TaskManager {
     // 📝 Editing
     // --------------------------------------------------------
     // 🔹 Modify Task or User details
-    public void editTask(int taskID, String title, String description, String dueDate) {
+    public void editTask(int taskID, String title, String description, LocalDate dueDate) {
         getTask(taskID).setTitle(title);
         getTask(taskID).setDescription(description);
         getTask(taskID).setDueDate(dueDate);
@@ -216,7 +217,8 @@ public class TaskManager {
     }
 
     public void setDueDate(int taskID, String dueDate) {
-        getTask(taskID).setDueDate(dueDate);
+        LocalDate targetDate = LocalDate.parse(dueDate);
+        getTask(taskID).setDueDate(targetDate);
     }
 
     // --------------------------------------------------------
@@ -236,9 +238,10 @@ public class TaskManager {
 
     // 🔹 Filter by Due Date
     public void viewTasksByDueDate(String dueDate) {
+        LocalDate targetDate = LocalDate.parse(dueDate);
         System.out.println("Tasks due on: " + dueDate);
         for (Task task : taskIDHashMap.values()) {
-            if (task.getDueDate().equals(dueDate)) {
+            if (task.getDueDate() != null && task.getDueDate().equals(targetDate)) {
                 System.out.println("[ID: " + task.getID() + "] " + task.getTitle() + " (" + task.getStatus() + ")"
                         + " Assigned to " + task.displayUsers());
             }

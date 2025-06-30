@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 // ------------------------------------------------------------
 // 🚀 Main: CLI Interface for Task Manager
@@ -189,9 +191,14 @@ public class Main {
                     option = scanner.nextLine();
                     if (option.equals("y")) {
                         lineBreak();
-                        System.out.println("Enter due date:");
-                        option = scanner.nextLine();
-                        task.setDueDate(option);
+                        try {
+                            System.out.println("Enter due date (YYYY-MM-DD):");
+                            String input = scanner.nextLine();
+                            task.setDueDate(LocalDate.parse(input));
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Invalid date format.");
+                        }
+
                     }
                     tm.addTask(task);
                 }
@@ -217,7 +224,7 @@ public class Main {
                     // continue with edit
                     String title = task.getTitle();
                     String description = task.getDescription();
-                    String dueDate = task.getDueDate();
+                    LocalDate dueDate = task.getDueDate();
                     lineBreak();
 
                     System.out.println("Would you like to edit the title? (y/n)");
@@ -243,7 +250,7 @@ public class Main {
                     if (option.equals("y")) {
                         lineBreak();
                         System.out.println("Enter due date:");
-                        dueDate = scanner.nextLine();
+                        dueDate = LocalDate.parse(scanner.nextLine());
                     }
                     tm.editTask(taskID, title, description, dueDate);
                 }

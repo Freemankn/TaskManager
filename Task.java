@@ -1,16 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class Task {
     private static int nextId = 1;
     private final int id;
     private String title;
     private String description;
-    private String dueDate; // Keep as String or use LocalDate
-    private TaskStatus status; // ✅ Use enum instead of String
+    private LocalDate dueDate;
+    private TaskStatus status;
     private List<User> assignedUsers;
 
-    public Task(String title, String description, String dueDate, TaskStatus status, List<User> assignedUsers) {
+    public Task(String title, String description, LocalDate dueDate, TaskStatus status, List<User> assignedUsers) {
         this.id = nextId++;
         this.title = title;
         this.description = description;
@@ -20,7 +21,7 @@ public class Task {
     }
 
     public Task(String title) {
-        this(title, "None", "None", TaskStatus.TODO, new ArrayList<User>());
+        this(title, "None", null, TaskStatus.TODO, new ArrayList<User>());
     }
 
     @Override
@@ -30,7 +31,7 @@ public class Task {
                 "Title: " + getTitle() + "\n"
                 + "Status: " + getStatus() + "\n"
                 + "Description: " + getDescription() + "\n"
-                + "Due Date: " + getDueDate() + "\n"
+                + "Due Date: " + (dueDate != null ? dueDate.toString() : "N/A") + "\n"
                 + "Assigned To: " + displayUsers() + "\n";
     }
 
@@ -61,7 +62,7 @@ public class Task {
         return assignedUsers;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
@@ -95,7 +96,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
