@@ -132,36 +132,29 @@ public class TaskManager {
     // ❌ Unassignments
     // --------------------------------------------------------
 
-    // 🔹 Unassign Task(s) from User (from user's perspective)
-    public void unassignTaskFromUser(int uID, int taskID) {
+    // 🔹 Unassign Task and User (from user's perspective)
+    public void unassignTaskAndUser(int uID, int taskID) {
         if (getUser(uID).getTasks().contains(getTask(taskID))) {
             unlinkUserToTask(taskID, uID);
         }
     }
 
-    // 🔹 Unassign User(s) from Task (from task's perspective)
-    private void unassignUserFromTask(int taskID, int uID) {
-        if (getTask(taskID).getAssignedUsers().contains(getUser(uID))) {
-            unassignUserFromTask(taskID, uID);
-        }
-    }
-
     public void unassignUsersFromTask(int taskID, ArrayList<Integer> uIDs) {
         for (Integer uID : uIDs) {
-            unassignUserFromTask(taskID, uID);
+            unassignTaskAndUser(uID, taskID);
         }
     }
 
     public void unassignTasksFromUser(int uID, ArrayList<Integer> taskIDs) {
         for (Integer taskID : taskIDs) {
-            unassignTaskFromUser(uID, taskID);
+            unassignTaskAndUser(uID, taskID);
         }
     }
 
     void unassignTasksFromUsers(ArrayList<Integer> uIDs, ArrayList<Integer> taskIDs) {
         for (Integer taskID : taskIDs) {
             for (Integer uID : uIDs) {
-                unassignTaskFromUser(taskID, uID);
+                unassignTaskAndUser(uID, taskID);
             }
         }
     }

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Task {
     private static int nextId = 1;
@@ -10,6 +11,7 @@ public class Task {
     private LocalDate dueDate;
     private TaskStatus status;
     private List<User> assignedUsers;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     public Task(String title, String description, LocalDate dueDate, TaskStatus status, List<User> assignedUsers) {
         this.id = nextId++;
@@ -31,7 +33,7 @@ public class Task {
                 "Title: " + getTitle() + "\n"
                 + "Status: " + getStatus() + "\n"
                 + "Description: " + getDescription() + "\n"
-                + "Due Date: " + (dueDate != null ? dueDate.toString() : "N/A") + "\n"
+                + "Due Date: " + (dueDate != null ? dueDate.format(FORMATTER) : "N/A") + "\n"
                 + "Assigned To: " + displayUsers() + "\n";
     }
 
@@ -45,11 +47,15 @@ public class Task {
         if (assignedUsers.isEmpty()) {
             return "No users";
         }
-        String output = "";
-        for (User u : assignedUsers) {
-            output += u.getName();
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < assignedUsers.size(); i++) {
+            output.append(assignedUsers.get(i).getName());
+            if (i != assignedUsers.size() - 1) {
+                output.append(", ");
+            }
         }
-        return output;
+
+        return output.toString();
     }
 
     // getters

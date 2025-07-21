@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 // ------------------------------------------------------------
@@ -15,6 +17,9 @@ import java.time.format.DateTimeParseException;
 
 public class Main {
 
+    // Global variable
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
     // --------------------------------------------------------
     // 🧱 Utility Methods
     // --------------------------------------------------------
@@ -23,39 +28,79 @@ public class Main {
         System.out.println();
     }
 
+    public static void pauseThenPrompt() {
+        try {
+            Thread.sleep(1800); // adjust to your preferred delay
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    static void updateTaskMessage(String title, int taskID, boolean isEdited) {
+        if (isEdited) {
+            System.out.println("Changes to task titled " + title + " with ID " + taskID + " has been made.");
+        } else {
+            System.out.println("No changes to task titled " + title + " with ID " + taskID + " has been made.");
+        }
+    }
+
+    static void updateUserMessage(User user, boolean isEdited) {
+        if (isEdited) {
+            System.out.println("Changes to " + user.getName() + " has been made.");
+        } else {
+            System.out.println("No changes to " + user.getName() + " has been made.");
+        }
+    }
+
     static void prompt() {
-        System.out.println("Would you like to add a task: command-> addT");
-        System.out.println("Would you like to remove a task: command-> rmT");
-        System.out.println("Would you like to remove multiple tasks: command-> rmMT");
-        System.out.println("Would you like to edit a task: command-> editT");
-        System.out.println("Would you like view a task: command -> viewT");
-        System.out.println("Would you like view all tasks: command -> viewAT");
+        System.out.println("--------------------------------------------");
+        System.out.println("Task options");
+        System.out.println("--------------------------------------------");
+
+        System.out.println("> Would you like to add a task: command-> addT");
+        System.out.println("> Would you like to remove a task: command-> rmT");
+        System.out.println("> Would you like to remove multiple tasks: command-> rmMT");
+        System.out.println("> Would you like to edit a task: command-> editT");
+        System.out.println("> Would you like view a task: command -> viewT");
+        System.out.println("> Would you like view all tasks: command -> viewAT");
+        System.out.println("> Would you change the status of the task: command->statusT");
         lineBreak();
 
-        System.out.println("Would you change the status of the task: command->statusT");
+        System.out.println("--------------------------------------------");
+        System.out.println("User options");
+        System.out.println("--------------------------------------------");
+
+        System.out.println("> Would you like to add a user: command-> addU");
+        System.out.println("> Would you like to remove a user: command-> rmU");
+        System.out.println("> Would you like to remove multiple users: command-> rmMU");
+        System.out.println("> Would you like to edit a user: command-> editU");
+        System.out.println("> Would you like to view a user: command-> viewU");
+        System.out.println("> Would you like to view all users: command-> viewAU");
         lineBreak();
 
-        System.out.println("Would you like to add a user: command-> addU");
-        System.out.println("Would you like to remove a user: command-> rmU");
-        System.out.println("Would you like to remove multiple users: command-> rmMU");
-        System.out.println("Would you like to edit a user: command-> editU");
-        System.out.println("Would you like to view a user: command-> viewU");
-        System.out.println("Would you like to view all users: command-> viewAU");
+        System.out.println("--------------------------------------------");
+        System.out.println("Assignment options");
+        System.out.println("--------------------------------------------");
+
+        System.out.println("> Would you like to assign a task to a user: command-> asgnU");
+        System.out.println("> Would you like to assign a task to multiple users: command-> asgnMU");
+        System.out.println("> Would you like to assign multiple tasks to a user: command-> asgnMT");
+        System.out.println("> Would you like to assign multiple tasks to multiple user: command-> asgnMTU");
         lineBreak();
 
-        System.out.println("Would you like to assign a task to a user: command-> asgnU");
-        System.out.println("Would you like to assign a task to multiple users: command-> asgnMU");
-        System.out.println("Would you like to assign multiple tasks to a user: command-> asgnMT");
-        System.out.println("Would you like to assign multiple tasks to multiple user: command-> asgnMTU");
+        System.out.println("--------------------------------------------");
+        System.out.println("Unassignment options");
+        System.out.println("--------------------------------------------");
+
+        System.out.println("> Would you like to unassign a task from a user: command-> unasgnU");
+        System.out.println("> Would you like to unassign a task from multiple users: command-> unasgnMU");
+        System.out.println("> Would you like to unassign multiple tasks from a user: command-> unasgnMT");
+        System.out.println("> Would you like to unassign multiple tasks from multiple user: command-> unasgnMTU");
         lineBreak();
 
-        System.out.println("Would you like to unassign a task from a user: command-> unasgnU");
-        System.out.println("Would you like to unassign a task from multiple users: command-> unasgnMU");
-        System.out.println("Would you like to unassign multiple tasks from a user: command-> unasgnMT");
-        System.out.println("Would you like to unassign multiple tasks from multiple user: command-> unasgnMTU");
+        System.out.println("> Type q to quit:");
         lineBreak();
-
-        System.out.println("Type q to quit:");
+        System.out.println("> Enter your command:");
     }
 
     // --------------------------------------------------------
@@ -71,7 +116,7 @@ public class Main {
     }
 
     static boolean validateTask(TaskManager tm, int taskID) {
-        if (!tm.containsUser(taskID)) {
+        if (!tm.containsTask(taskID)) {
             System.out.println("Task ID not found.");
             return false;
         }
@@ -159,7 +204,7 @@ public class Main {
     // --------------------------------------------------------
     // 🚦 Main Loop
     // --------------------------------------------------------
-
+                    
     public static void main(String[] args) {
         Task task = null;
         User user = null;
@@ -173,6 +218,7 @@ public class Main {
         String option;
 
         while (true) {
+            pauseThenPrompt();
             prompt();
             option = scanner.nextLine();
             if (option.equals("q"))
@@ -203,23 +249,26 @@ public class Main {
                     if (isYes) {
                         lineBreak();
                         try {
-                            System.out.println("Enter due date (YYYY-MM-DD):");
-                            String input = scanner.nextLine();
-                            task.setDueDate(LocalDate.parse(input));
+                            System.out.println("Enter due date (MM/DD/YYYY):");
+                            String date = scanner.nextLine();
+                            task.setDueDate(LocalDate.parse(date, FORMATTER));
                         } catch (DateTimeParseException e) {
                             System.out.println("Invalid date format.");
                         }
-
                     }
                     tm.addTask(task);
-                    System.out.println("Task ID: " + task.getID() + " has been added");
+                    lineBreak();
+                    System.out
+                            .println("Task titled " + task.getTitle() + " with ID " + task.getID() + " has been added");
                 }
 
                 case "rmT" -> {
                     int taskID = requestTaskID(scanner);
                     if (!validateTask(tm, taskID))
                         break;
-                    System.out.println("Task ID: " + task.getID() + " has been removed");
+                    lineBreak();
+                    System.out.println(
+                            "Task titled " + task.getTitle() + " with ID " + task.getID() + " has been removed");
                     tm.removeTask(taskID);
                 }
 
@@ -227,6 +276,7 @@ public class Main {
                     ArrayList<Integer> taskIDs = requestMultipleIDs(scanner, "task");
                     taskIDs.removeIf(taskid -> !tm.containsTask(taskid));
                     tm.removeMultipleTasks(taskIDs);
+                    lineBreak();
                     System.out.println("These tasks have been removed");
                 }
 
@@ -239,6 +289,7 @@ public class Main {
                     String title = task.getTitle();
                     String description = task.getDescription();
                     LocalDate dueDate = task.getDueDate();
+                    boolean isEdited = false;
                     lineBreak();
 
                     boolean isYes = askYesOrNo(scanner, "Would you like to edit the title?");
@@ -246,6 +297,7 @@ public class Main {
                         lineBreak();
                         System.out.println("Enter Title:");
                         title = scanner.nextLine();
+                        isEdited = true;
                     }
                     lineBreak();
 
@@ -254,28 +306,46 @@ public class Main {
                         lineBreak();
                         System.out.println("Enter description:");
                         description = scanner.nextLine();
+                        isEdited = true;
                     }
                     lineBreak();
 
-                    isYes = askYesOrNo(scanner, "Would you like to edit the due date? (y/n)");
+                    isYes = askYesOrNo(scanner, "Would you like to edit the due date?");
                     if (isYes) {
                         lineBreak();
-                        System.out.println("Enter due date:");
-                        dueDate = LocalDate.parse(scanner.nextLine());
+                        try {
+                            System.out.println("Enter due date (MM/DD/YYYY):");
+                            String date = scanner.nextLine();
+                            dueDate = LocalDate.parse(date, FORMATTER);
+                            isEdited = true;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Invalid date format.");
+                        }
                     }
+                    lineBreak();
                     tm.editTask(taskID, title, description, dueDate);
+                    updateTaskMessage(tm.getTask(taskID).getTitle(), taskID, isEdited);
                 }
 
                 case "statusT" -> {
-                    System.out.println("Enter Task ID:");
-                    int taskID = scanner.nextInt();
+                    int taskID = requestTaskID(scanner);
                     if (!validateTask(tm, taskID))
                         break;
-                    scanner.nextLine();
+                    boolean isEdited = false;
                     lineBreak();
-                    System.out.println("Enter status (TODO, IN_PROGRESS, DONE):");
-                    TaskStatus status = TaskStatus.valueOf(scanner.nextLine().toUpperCase());
-                    tm.setStatus(taskID, status);
+
+                    try {
+                        System.out.println("Enter status (TODO, IN_PROGRESS, DONE):");
+                        TaskStatus status = TaskStatus.valueOf(scanner.nextLine().toUpperCase());
+                        tm.setStatus(taskID, status);
+                        isEdited = true;
+                    } catch (IllegalArgumentException e) {
+                        lineBreak();
+                        System.out.println(
+                                "Invalid status. Here are the valid statuses: " + Arrays.toString(TaskStatus.values()));
+                    }
+                    lineBreak();
+                    updateTaskMessage(tm.getTask(taskID).getTitle(), taskID, isEdited);
                 }
 
                 // --------------------------------------------
@@ -295,6 +365,7 @@ public class Main {
                         user.setRole(scanner.nextLine());
                     }
                     tm.addUser(user);
+                    lineBreak();
                     System.out.println("UID: " + user.getuID() + " has been added");
                 }
 
@@ -302,6 +373,7 @@ public class Main {
                     int uID = requestUID(scanner);
                     if (!validateUser(tm, uID))
                         break;
+                    lineBreak();
                     System.out.println("UID: " + user.getuID() + " has been removed");
                     tm.removeUser(uID);
                 }
@@ -310,6 +382,7 @@ public class Main {
                     ArrayList<Integer> uIDs = requestMultipleIDs(scanner, "user");
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.removeMultipleUsers(uIDs);
+                    lineBreak();
                     System.out.println("These users have been removed");
 
                 }
@@ -322,6 +395,8 @@ public class Main {
                     // continue with edit
                     String name = user.getName();
                     String role = user.getRole();
+                    boolean isEdited = false;
+
                     lineBreak();
 
                     boolean isYes = askYesOrNo(scanner, "Would you like to edit the name?");
@@ -329,6 +404,7 @@ public class Main {
                         lineBreak();
                         System.out.println("Enter name:");
                         name = scanner.nextLine();
+                        isEdited = true;
                     }
                     lineBreak();
 
@@ -337,8 +413,11 @@ public class Main {
                         lineBreak();
                         System.out.println("Enter Role:");
                         role = scanner.nextLine();
+                        isEdited = true;
                     }
                     tm.editUser(uID, name, role);
+                    lineBreak();
+                    updateUserMessage(user, isEdited);
                 }
 
                 // --------------------------------------------
@@ -352,7 +431,8 @@ public class Main {
                     if (!validateTaskAndUser(tm, taskID, uID))
                         break;
                     tm.assignTasktoUser(taskID, uID);
-                    System.out.println("Task assgined");
+                    lineBreak();
+                    System.out.println("Task assgined to the user " + tm.getUser(uID).getName() + " with UID: " + uID);
                 }
 
                 case "asgnMU" -> {
@@ -361,6 +441,7 @@ public class Main {
                         break;
                     input.getUIDS().removeIf(uID -> !tm.containsUser(uID));
                     tm.assignTasktoUsers(input.getTaskID(), input.getUIDS());
+                    lineBreak();
                     System.out.println("Task assgined to users");
                 }
 
@@ -370,7 +451,10 @@ public class Main {
                         break;
                     input.getTaskIDS().removeIf(taskID -> !tm.containsUser(taskID));
                     tm.assignTaskstoUser(input.getUID(), input.getTaskIDS());
-                    System.out.println("Tasks assgined");
+                    lineBreak();
+                    System.out.println(
+                            "Tasks assgined to the user " + tm.getUser(input.getUID()) + " with UID: "
+                                    + input.getUID());
                 }
 
                 case "asgnMTU" -> {
@@ -379,6 +463,7 @@ public class Main {
                     taskIDs.removeIf(taskID -> !tm.containsTask(taskID));
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.assignTaskstoUsers(uIDs, taskIDs);
+                    lineBreak();
                     System.out.println("Tasks assgined to users");
                 }
 
@@ -392,8 +477,10 @@ public class Main {
                     int uID = requestUID(scanner);
                     if (!validateTaskAndUser(tm, taskID, uID))
                         break;
-                    tm.unassignTaskFromUser(uID, taskID);
-                    System.out.println("Task unassgined");
+                    tm.unassignTaskAndUser(uID, taskID);
+                    lineBreak();
+                    System.out.println(
+                            "Task unassgined from the user " + tm.getUser(uID).getName() + " with UID: " + uID);
                 }
 
                 case "unasgnMU" -> {
@@ -402,8 +489,8 @@ public class Main {
                         break;
                     input.getUIDS().removeIf(uID -> !tm.containsUser(uID));
                     tm.unassignUsersFromTask(input.getTaskID(), input.getUIDS());
-                    System.out.println("Task unassgined to users");
-
+                    lineBreak();
+                    System.out.println("Task unassgined from users");
                 }
 
                 case "unasgnMT" -> {
@@ -412,7 +499,9 @@ public class Main {
                         break;
                     input.getTaskIDS().removeIf(taskID -> !tm.containsUser(taskID));
                     tm.unassignTasksFromUser(input.getUID(), input.getTaskIDS());
-                    System.out.println("Tasks unassgined");
+                    lineBreak();
+                    System.out.println("Tasks unassgined from " + tm.getUser(input.getUID()) + " with UID: "
+                            + input.getUID());
 
                 }
 
@@ -422,7 +511,8 @@ public class Main {
                     taskIDs.removeIf(taskID -> !tm.containsTask(taskID));
                     uIDs.removeIf(uID -> !tm.containsUser(uID));
                     tm.unassignTasksFromUsers(uIDs, taskIDs);
-                    System.out.println("Tasks unassgined to users");
+                    lineBreak();
+                    System.out.println("Tasks unassgined from users");
 
                 }
 
@@ -432,7 +522,27 @@ public class Main {
 
                 case "viewT" -> {
                     int taskID = requestTaskID(scanner);
+                    if (!validateTask(tm, taskID))
+                        break;
                     tm.viewTask(taskID);
+                    viewTaskMenu: while (true) {
+                        System.out.println("""
+                                b. Back to main menu
+                                q. Quit
+                                """);
+                        String choice = scanner.nextLine();
+                        switch (choice) {
+                            case "b" -> {
+                                break viewTaskMenu;
+                            }
+                            case "q" -> {
+                                scanner.close();
+                                System.exit(0);
+                            }
+                            default -> System.out.println("Invalid option.");
+                        }
+                        lineBreak();
+                    }
                 }
 
                 case "viewAT" -> {
@@ -497,10 +607,28 @@ public class Main {
                     if (!validateUser(tm, uID))
                         break;
                     tm.viewUser(uID);
+                    viewUserMenu: while (true) {
+                        System.out.println("""
+                                b. Back to main menu
+                                q. Quit
+                                """);
+                        String choice = scanner.nextLine();
+                        switch (choice) {
+                            case "b" -> {
+                                break viewUserMenu;
+                            }
+                            case "q" -> {
+                                scanner.close();
+                                System.exit(0);
+                            }
+                            default -> System.out.println("Invalid option.");
+                        }
+                        lineBreak();
+                    }
                 }
 
                 case "viewAU" -> {
-                    viewUserMenu: while (true) {
+                    viewUsersMenu: while (true) {
                         System.out.println("""
                                 How would you like to filter users?
                                 1. By Role
@@ -520,7 +648,7 @@ public class Main {
                                 tm.viewUsers();
                             }
                             case "b" -> {
-                                break viewUserMenu;
+                                break viewUsersMenu;
                             }
                             case "q" -> {
                                 scanner.close();
