@@ -66,6 +66,24 @@ task-manager/
 
 ---
 
+🛠️ Installation & Setup
+📦 Install Java (JDK)
+To run this project, make sure Java is installed on your machine.
+
+✅ Check if Java is installed:
+
+    ```bash
+    java -version
+    ```
+
+If Java is not installed, download and install the latest version of the Java Development Kit (JDK):
+
+Download [Java JDK](https://www.oracle.com/java/technologies/downloads/?er=221886) (Oracle)
+
+Make sure to add java and javac to your system's PATH during installation.
+
+---
+
 ## 🧪 How to Run
 
 1. **Clone the project**
@@ -78,10 +96,13 @@ task-manager/
 2. **Compile**
 
    ```bash
-   javac Main.java
+   javac *.java
    ```
 
 3. ** Run **
+   ```bash
+   java Main
+   ```
 
 ## Example Commands
 
