@@ -66,15 +66,16 @@ task-manager/
 
 ---
 
-🛠️ Installation & Setup
+## 🛠️ Installation & Setup
+
 📦 Install Java (JDK)
 To run this project, make sure Java is installed on your machine.
 
-✅ Check if Java is installed:
+**✅ Check if Java is installed:**
 
-    ```bash
-    java -version
-    ```
+```bash
+java --version
+```
 
 If Java is not installed, download and install the latest version of the Java Development Kit (JDK):
 
@@ -99,7 +100,7 @@ Make sure to add java and javac to your system's PATH during installation.
    javac *.java
    ```
 
-3. ** Run **
+3. **Run**
    ```bash
    java Main
    ```
