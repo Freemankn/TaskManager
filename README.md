@@ -38,6 +38,23 @@ A simple command-line task management system built in Java. It supports creating
 
 ---
 
+## 📁 Project Structure
+
+```bash
+task-manager/
+│
+├── Main.java           # CLI entry point
+├── TaskManager.java    # Core logic controller
+├── Task.java           # Task model
+├── User.java           # User model
+├── TaskInput.java      # Utility for multi-ID input
+├── TaskStatus.java     # Enum for task statuses
+├── Test.java           # Optional test file
+└── README.md           # You're here
+```
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Java** — core language (Java 8+)
@@ -68,25 +85,14 @@ A simple command-line task management system built in Java. It supports creating
 
 ## Example Commands
 
-Would you like to add a task: command -> addT
-Would you like to edit a user: command -> editU
-Would you like to assign a task to a user: command -> asgnU
-Type q to quit:
+    ```bash
+    Would you like to add a task: command -> addT
+    Would you like to edit a user: command -> editU
+    Would you like to assign a task to a user: command -> asgnU
+    Type q to quit:
+    ```
 
-## 📁 Project Structure
-
-```bash
-task-manager/
-│
-├── Main.java           # CLI entry point
-├── TaskManager.java    # Core logic controller
-├── Task.java           # Task model
-├── User.java           # User model
-├── TaskInput.java      # Utility for multi-ID input
-├── TaskStatus.java     # Enum for task statuses
-├── Test.java           # Optional test file
-└── README.md           # You're here
-```
+---
 
 ## 🧠 Future Improvements
 
@@ -94,10 +100,22 @@ task-manager/
 - Unit testing with JUnit
 - Connected to a frontend version of the Task Manager
 
+---
+
 ## 🧑‍💻 Author
 
 Created by Freeman Nkouka
 
+---
+
 ## 📄 License
 
 MIT License. Feel free to use, fork, and improve.
+
+```
+
+```
+
+```
+
+```
