@@ -85,12 +85,10 @@ task-manager/
 
 ## Example Commands
 
-    ```bash
     Would you like to add a task: command -> addT
     Would you like to edit a user: command -> editU
     Would you like to assign a task to a user: command -> asgnU
-    Type q to quit:
-    ```
+    Type q to quit
 
 ---
 
@@ -111,11 +109,3 @@ Created by Freeman Nkouka
 ## 📄 License
 
 MIT License. Feel free to use, fork, and improve.
-
-```
-
-```
-
-```
-
-```
